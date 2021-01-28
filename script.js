@@ -4,20 +4,21 @@ const range=document.querySelector('#numberOfBoxes');
 const numberLabel = document.querySelector('#numberLabel');
 const color = document.querySelector('#colorOfBoxes');
 const toggleDrawing = document.querySelector('#toggleDrawing');
-let drawing = 0;
-
-
-
 button.addEventListener('click', clear);
 range.addEventListener('change', sketch);
 range.addEventListener('input', changeLabel);
 window.addEventListener('resize', cssChange);
+let drawing = 0; //Toggle for drawing
+document.addEventListener('keydown', draw);
 
+
+//Real time display of the input range value;
 function changeLabel(){
     let numberBoxes = document.getElementById("numberOfBoxes").value;
     numberLabel.textContent = `${numberBoxes} x ${numberBoxes} `;
 }
 
+//Creation of boxes and assigning of addEventListener for each box
 function sketch(){
     container = document.querySelector('#container');
     let boxes = Array.from(document.querySelectorAll(".boxes"));
@@ -25,21 +26,7 @@ function sketch(){
     let numberBoxes = document.getElementById("numberOfBoxes").value
     numberLabel.textContent = `${numberBoxes} x ${numberBoxes} `
     let x = numberBoxes;
-    let z= document.getElementById('container').clientWidth;
-    let y= document.getElementById('container').clientHeight
-    let rules = [];
-
-        //Modifies the third rule on css which is .boxes by updating its width and height;
-            if (document.styleSheets[0].cssRules){
-                rules = document.styleSheets[0].cssRules;
-            }
-            else if (document.styleSheets[0].rules){
-                rules = document.styleSheets[0].rules;
-            }
-                // rules[2].style.width = `${z/x}px`;
-                // rules[2].style.height = `${y/x}px`;
-                rules[2].style.width = `${100/x}%`;
-                rules[2].style.height = `${100/x}%`;
+    cssChange(); //change the boxes width and heigh depending on the div's container dimensions.
 
         //creates the boxes        
         for (i=1; i<=x; i++){
@@ -57,7 +44,7 @@ function sketch(){
        
 }
 
-
+//function when mouse is hovered upon the box
 function hoverMouse(e){
     if(drawing===1){
     let colorBoxes = document.getElementById("colorOfBoxes").value
@@ -69,7 +56,7 @@ function hoverMouse(e){
     }
 }
 
-
+//function to clear
 function clear(){
     console.log('hello');
     container = document.querySelector('#container');
@@ -78,6 +65,7 @@ function clear(){
     sketch();
 }
 
+//function to resize boxes whenever the main cotainer is resized
 function cssChange(){
     let numberBoxes = document.getElementById("numberOfBoxes").value
     let x = numberBoxes;
@@ -92,13 +80,10 @@ function cssChange(){
             else if (document.styleSheets[0].rules){
                 rules = document.styleSheets[0].rules;
             }
-                rules[2].style.width = `${z/x}px`;
-                rules[2].style.height = `${y/x}px`;
+                rules[2].style.width = `${100/x}%`;
+                rules[2].style.height = `${100/x}%`;
 }
-
-
-document.addEventListener('keydown', draw);
-
+//function to toggle drawing;
 function draw(event){
     let x=event.which||event.keyCode;
     if(x === 68){
