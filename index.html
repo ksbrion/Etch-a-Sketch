@@ -8,8 +8,20 @@
         <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     </head>
     <body>
-        <button id="buttons">CLEAR</button>
-        <div id="container"></div>
+        <div id="sketch">
+            <div id="controls">
+                <p>Press D to toggle drawing</p>
+                <p id="toggleDrawing"></p>
+                <label for="numberOfBoxes">Dimension: </label>
+                <input type="range" id="numberOfBoxes" min="0" max="100" step="1">
+                <p>Dimension Selected: </p>
+                <p id="numberLabel"></p>
+                <label for="colorOfBoxes">Color of Boxes:</label>
+                <input type="color" id="colorOfBoxes">
+                <button id="buttons">CLEAR</button>
+            </div>
+            <div id="container"></div>
+        </div>
         <script src="script.js"> </script>
     </body>
 </html>

@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 #container{
@@ -7,7 +8,6 @@
     flex-wrap: wrap;
     width: 600px;
     height: 600px;
-    margin: auto auto;
     border: solid black;
 }
 
@@ -24,5 +24,24 @@
 
 #buttons{
     display: block;
-    margin: auto auto;
+    
+}
+
+#sketch{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+#controls{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    line-height: 20px;
+    margin-right: 50px;
+}
+
+#controls > * {
+    margin-top: 10px;
 }
