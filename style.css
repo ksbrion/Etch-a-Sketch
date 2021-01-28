@@ -45,3 +45,7 @@
 #controls > * {
     margin-top: 10px;
 }
+
+body{
+    overflow: hidden;
+}

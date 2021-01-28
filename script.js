@@ -12,36 +12,20 @@ let drawing = 0; //Toggle for drawing
 document.addEventListener('keydown', draw);
 
 
+
 //Real time display of the input range value;
 function changeLabel(){
     let numberBoxes = document.getElementById("numberOfBoxes").value;
     numberLabel.textContent = `${numberBoxes} x ${numberBoxes} `;
+    cssChange();
 }
 
-//Creation of boxes and assigning of addEventListener for each box
+//Assigning of addEventListener for each box
 function sketch(){
-    container = document.querySelector('#container');
-    let boxes = Array.from(document.querySelectorAll(".boxes"));
-    boxes.forEach(box => container.removeChild(box));
-    let numberBoxes = document.getElementById("numberOfBoxes").value
-    numberLabel.textContent = `${numberBoxes} x ${numberBoxes} `
-    let x = numberBoxes;
-    cssChange(); //change the boxes width and heigh depending on the div's container dimensions.
-
-        //creates the boxes        
-        for (i=1; i<=x; i++){
-            for(j=1; j<=x; j++){
-                let div = document.createElement("div");
-                div.setAttribute(`data-x`,`${i}`);
-                div.setAttribute(`data-y`,`${j}`);
-                div.classList.add('boxes');
-                container.appendChild(div);
-            }
-        }
-
-        boxes = Array.from(document.querySelectorAll(".boxes"));
-        boxes.forEach(box => box.addEventListener('mouseover', hoverMouse));
-       
+    cssChange(); 
+    boxes = Array.from(document.querySelectorAll(".boxes"));
+    boxes.forEach(box => box.addEventListener('mouseover', hoverMouse));
+    boxes.forEach(box => box.addEventListener('touchmove', hoverMouse));
 }
 
 //function when mouse is hovered upon the box
@@ -56,6 +40,10 @@ function hoverMouse(e){
     }
 }
 
+// function touchMove(e){
+//     e.target.setAttribute("style", `background-color: ${colorBoxes};`);
+// }
+
 //function to clear
 function clear(){
     console.log('hello');
@@ -65,9 +53,12 @@ function clear(){
     sketch();
 }
 
-//function to resize boxes whenever the main cotainer is resized
+//function to resize and create boxes;
 function cssChange(){
+    let boxes = Array.from(document.querySelectorAll(".boxes"));
+    boxes.forEach(box => container.removeChild(box));
     let numberBoxes = document.getElementById("numberOfBoxes").value
+    numberLabel.textContent = `${numberBoxes} x ${numberBoxes} `
     let x = numberBoxes;
     let z= document.getElementById('container').clientWidth;
     let y= document.getElementById('container').clientHeight
@@ -82,6 +73,16 @@ function cssChange(){
             }
                 rules[2].style.width = `${100/x}%`;
                 rules[2].style.height = `${100/x}%`;
+
+                for (i=1; i<=x; i++){
+                    for(j=1; j<=x; j++){
+                        let div = document.createElement("div");
+                        div.setAttribute(`data-x`,`${i}`);
+                        div.setAttribute(`data-y`,`${j}`);
+                        div.classList.add('boxes');
+                        container.appendChild(div);
+                    }
+                }
 }
 //function to toggle drawing;
 function draw(event){
