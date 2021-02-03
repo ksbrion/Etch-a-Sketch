@@ -4,12 +4,16 @@ const range=document.querySelector('#numberOfBoxes');
 const numberLabel = document.querySelector('#numberLabel');
 const color = document.querySelector('#colorOfBoxes');
 const toggleDrawing = document.querySelector('#toggleDrawing');
+const rainbowToggle=document.querySelector('#rainbow');
+const opacityToggle=document.querySelector('#opacity');
+let rainbowIndicator = 0;
 button.addEventListener('click', clear);
 range.addEventListener('change', sketch);
 range.addEventListener('input', changeLabel);
-window.addEventListener('resize', cssChange);
+window.addEventListener('resize', sketch);
 let drawing = 0; //Toggle for drawing
 document.addEventListener('keydown', draw);
+
 
 
 
@@ -31,22 +35,45 @@ function sketch(){
 //function when mouse is hovered upon the box
 function hoverMouse(e){
     if(drawing===1){
-    let colorBoxes = document.getElementById("colorOfBoxes").value
-    console.log(colorBoxes);
-    e.target.setAttribute("style", `background-color: ${colorBoxes};`);
+    let colorBoxes = (rainbowToggle.checked === true) ? rainbow() : document.getElementById("colorOfBoxes").value
+    e.target.style.backgroundColor = colorBoxes;
+    let boxOpacity = Number(e.target.style.opacity);
+    e.target.style.opacity = (opacityToggle.checked === true) ? (boxOpacity+0.2) : 1;
     }
     else{
         return;
     }
 }
 
-// function touchMove(e){
-//     e.target.setAttribute("style", `background-color: ${colorBoxes};`);
-// }
+function rainbow(){
+    switch(rainbowIndicator){
+        case 0:
+            rainbowIndicator +=1;
+            return 'red';
+        case 1:
+            rainbowIndicator +=1;
+            return 'orange';
+        case 2:
+            rainbowIndicator +=1;
+            return 'yellow';
+        case 3:
+            rainbowIndicator +=1;
+            return 'green';
+        case 4:
+            rainbowIndicator +=1;
+            return 'blue';
+        case 5:
+            rainbowIndicator +=1;
+            return 'indigo';
+        case 6:
+        rainbowIndicator = 0;
+        return 'violet';
+    }
+
+}
 
 //function to clear
 function clear(){
-    console.log('hello');
     container = document.querySelector('#container');
     const boxes = Array.from(document.querySelectorAll(".boxes"));
     boxes.forEach(box => container.removeChild(box));
@@ -60,8 +87,6 @@ function cssChange(){
     let numberBoxes = document.getElementById("numberOfBoxes").value
     numberLabel.textContent = `${numberBoxes} x ${numberBoxes} `
     let x = numberBoxes;
-    let z= document.getElementById('container').clientWidth;
-    let y= document.getElementById('container').clientHeight
     let rules = [];
 
         //Modifies the third rule on css which is .boxes by updating its width and height;
@@ -88,16 +113,13 @@ function cssChange(){
 function draw(event){
     let x=event.which||event.keyCode;
     if(x === 68){
-        console.log('pumasok')
         if(drawing === 0){
             drawing = 1; 
-            console.log('draw is on')
             toggleDrawing.textContent = "Drawing is On";
             toggleDrawing.setAttribute("style", "color:green;");
         }
         else if(drawing === 1){
             drawing = 0;
-            console.log('draw is off')
             toggleDrawing.textContent = "Drawing is Off";
             toggleDrawing.setAttribute("style", "color:red;");
         }
