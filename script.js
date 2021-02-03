@@ -10,7 +10,8 @@ let rainbowIndicator = 0;
 button.addEventListener('click', clear);
 range.addEventListener('change', sketch);
 range.addEventListener('input', changeLabel);
-window.addEventListener('resize', sketch);
+window.addEventListener('resize', resize);
+window.addEventListener('load', sketch);
 let drawing = 0; //Toggle for drawing
 document.addEventListener('keydown', draw);
 
@@ -21,12 +22,12 @@ document.addEventListener('keydown', draw);
 function changeLabel(){
     let numberBoxes = document.getElementById("numberOfBoxes").value;
     numberLabel.textContent = `${numberBoxes} x ${numberBoxes} `;
-    cssChange();
+    sketch();
 }
 
 //Assigning of addEventListener for each box
 function sketch(){
-    cssChange(); 
+    boxCreate(); 
     boxes = Array.from(document.querySelectorAll(".boxes"));
     boxes.forEach(box => box.addEventListener('mouseover', hoverMouse));
     boxes.forEach(box => box.addEventListener('touchmove', hoverMouse));
@@ -38,7 +39,7 @@ function hoverMouse(e){
     let colorBoxes = (rainbowToggle.checked === true) ? rainbow() : document.getElementById("colorOfBoxes").value
     e.target.style.backgroundColor = colorBoxes;
     let boxOpacity = Number(e.target.style.opacity);
-    e.target.style.opacity = (opacityToggle.checked === true) ? (boxOpacity+0.2) : 1;
+    e.target.style.opacity = (opacityToggle.checked === true) ? (boxOpacity+0.3) : 1;
     }
     else{
         return;
@@ -72,6 +73,22 @@ function rainbow(){
 
 }
 
+function resize(){
+    let numberBoxes = document.getElementById("numberOfBoxes").value
+    numberLabel.textContent = `${numberBoxes} x ${numberBoxes} `
+    let x = numberBoxes;
+    let rules = [];
+    if (document.styleSheets[0].cssRules){
+        rules = document.styleSheets[0].cssRules;
+    }
+    else if (document.styleSheets[0].rules){
+        rules = document.styleSheets[0].rules;
+    }
+        rules[2].style.width = `${100/x}%`;
+        rules[2].style.height = `${100/x}%`;
+    return x;
+}
+
 //function to clear
 function clear(){
     container = document.querySelector('#container');
@@ -81,33 +98,21 @@ function clear(){
 }
 
 //function to resize and create boxes;
-function cssChange(){
+function boxCreate(){
     let boxes = Array.from(document.querySelectorAll(".boxes"));
     boxes.forEach(box => container.removeChild(box));
-    let numberBoxes = document.getElementById("numberOfBoxes").value
-    numberLabel.textContent = `${numberBoxes} x ${numberBoxes} `
-    let x = numberBoxes;
-    let rules = [];
+    //Modifies the third rule on css which is .boxes by updating its width and height;
+        let x = resize();
 
-        //Modifies the third rule on css which is .boxes by updating its width and height;
-            if (document.styleSheets[0].cssRules){
-                rules = document.styleSheets[0].cssRules;
-            }
-            else if (document.styleSheets[0].rules){
-                rules = document.styleSheets[0].rules;
-            }
-                rules[2].style.width = `${100/x}%`;
-                rules[2].style.height = `${100/x}%`;
-
-                for (i=1; i<=x; i++){
-                    for(j=1; j<=x; j++){
-                        let div = document.createElement("div");
-                        div.setAttribute(`data-x`,`${i}`);
-                        div.setAttribute(`data-y`,`${j}`);
-                        div.classList.add('boxes');
-                        container.appendChild(div);
-                    }
+            for (i=1; i<=x; i++){
+                for(j=1; j<=x; j++){
+                    let div = document.createElement("div");
+                    div.setAttribute(`data-x`,`${i}`);
+                    div.setAttribute(`data-y`,`${j}`);
+                    div.classList.add('boxes');
+                    container.appendChild(div);
                 }
+            }
 }
 //function to toggle drawing;
 function draw(event){
